@@ -20,22 +20,22 @@ public class TelaTimeThread extends JDialog {
 
 	private JPanel jPanel = new JPanel(new GridBagLayout());// painel de componentes
 
-	private JLabel descricaoHora = new JLabel("time thread 1");
-	private JTextField mostraTempo = new JTextField();
+	private JLabel descricaoHora = new JLabel("time thread 1");// iniciou um novo campo
+	private JTextField mostraTempo = new JTextField();// entrada de info
 
 	private JLabel descricaoHora2 = new JLabel("time thread 2");
 	private JTextField mostraTempo2 = new JTextField();
 
-	private JButton jButton = new JButton("Start");
-	private JButton jButton2 = new JButton("Stop");
-	
-	//***********************************************
-	private  Runnable thread1 = new Runnable() {
-		
+	private JButton jButton = new JButton("Start");// inicia um botão com a tag
+	private JButton jButton2 = new JButton("Stop");// inicia um botão com a tag
+
+	// ***********************************************
+	private Runnable thread1 = new Runnable() {
+
 		public void run() {
-			while(true) { //Fica sempre rodando 
-				mostraTempo.setText(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").
-						format(Calendar.getInstance().getTime()));
+			while (true) { // Fica sempre rodando
+				mostraTempo
+						.setText(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(Calendar.getInstance().getTime()));
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -45,23 +45,40 @@ public class TelaTimeThread extends JDialog {
 			}
 		}
 	};
-	
+
+	private Runnable thread2 = new Runnable() {
+
+		public void run() {
+			while (true) { // Fica sempre rodando
+				mostraTempo2
+						.setText(new SimpleDateFormat("dd-MM-yyyy hh.mm.ss").format(Calendar.getInstance().getTime()));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	};
+
 	private Thread thread1Time;
+	private Thread thread2Time;
 //*******************************************************
-	
+
 	public TelaTimeThread() {// Executa o que estiver dentro no momento da instânciação do objeto
 		// TODO Auto-generated constructor stub
-		setTitle("Minha tela de time com Thread");
-		setSize(new Dimension(240, 240));
-		setLocationRelativeTo(null);
-		setResizable(false);
+		setTitle("Minha tela de time com Thread");// titulo da tela
+		setSize(new Dimension(240, 240));// tamanho da janela
+		setLocationRelativeTo(null);// sem referencia em relação as bordas da tela
+		setResizable(false);// impede de mudar o tamanho das telas
 		// Primeira parte concluida
 
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();// Controlador de posicionamento de compones
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
 		gridBagConstraints.gridwidth = 2;
-		gridBagConstraints.insets = new Insets(5, 10, 5, 5);
+		gridBagConstraints.insets = new Insets(5, 10, 5, 5);// deve ser as bordas
 		gridBagConstraints.anchor = gridBagConstraints.WEST;
 
 		descricaoHora.setPreferredSize(new Dimension(200, 25));
@@ -92,29 +109,39 @@ public class TelaTimeThread extends JDialog {
 		jButton2.setPreferredSize(new Dimension(92, 25));
 		gridBagConstraints.gridx++;
 		jPanel.add(jButton2, gridBagConstraints);
-		
-		//--------------------------------------função botão start
+
+		// --------------------------------------função botão start
 		jButton.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {//execua o clique no botão 
+
+			public void actionPerformed(ActionEvent e) {// execua o clique no botão
 				// TODO Auto-generated method stub
-				
+
 				thread1Time = new Thread(thread1);
 				thread1Time.start();
 				
+				thread2Time = new Thread(thread2);
+				thread2Time.start();
+				
+				jButton.setEnabled(false);
+				jButton2.setEnabled(true);
+
 			}
 		});
-		
-		//--------------------------------------função botão stop
-		
+
+		// --------------------------------------função botão stop
+
 		jButton2.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				thread1Time.stop();
+				thread2Time.stop();
 				
+				jButton.setEnabled(true);
+				jButton2.setEnabled(false);
 			}
 		});
 		
+		jButton2.setEnabled(false);
 
 		add(jPanel, BorderLayout.WEST);
 		// Sempre será o ultimo comando

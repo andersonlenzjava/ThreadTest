@@ -6,7 +6,7 @@ public class ExecutarTela {
 		
 		TelaTimeThread telaTimeThread = new TelaTimeThread();
 		
-		
+		gblTest gbltests = new gblTest();
 	}
 
 }
